@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Breakout - Smash bricks with a bouncing ball. Free browser game." />
+  <title>Breakout | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('breakout'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: linear-gradient(135deg, #f59e0b, #ef4444); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Breakout</h1>
+      <p class="game-subtitle">Smash all the bricks — don't let the ball drop!</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Score</div>
+        <div class="value" id="score">0</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Lives</div>
+        <div class="value" id="lives">3</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Level</div>
+        <div class="value" id="level">1</div>
+      </div>
+      <button class="btn-icon" id="resetBtn" title="New Game">↻</button>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="gameCanvas" width="480" height="400"></canvas>
+      <div id="startScreen" class="bo-overlay">
+        <div class="bo-overlay-content">
+          <div class="bo-overlay-icon">🧱</div>
+          <h2>Ready?</h2>
+          <p>Click or tap to launch the ball</p>
+        </div>
+      </div>
+      <div id="overlay" class="bo-overlay hidden">
+        <div class="bo-overlay-content">
+          <div id="overlayIcon" class="bo-overlay-icon">💥</div>
+          <h2 id="overlayTitle">Game Over</h2>
+          <p id="overlayMsg">Score: 0</p>
+          <button class="btn btn-primary" id="overlayBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint-text">Mouse / touch to move paddle • Click to launch</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

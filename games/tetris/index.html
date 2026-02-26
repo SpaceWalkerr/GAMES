@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Tetris - The iconic falling blocks puzzle. Free browser game." />
+  <title>Tetris | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('tetris'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: linear-gradient(135deg, #8b5cf6, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tetris</h1>
+      <p class="game-subtitle">Stack blocks, clear lines, survive!</p>
+    </div>
+
+    <div class="tetris-layout">
+      <div class="tetris-side">
+        <div class="score-badge">
+          <div class="label">Score</div>
+          <div class="value" id="score">0</div>
+        </div>
+        <div class="score-badge">
+          <div class="label">Lines</div>
+          <div class="value" id="lines">0</div>
+        </div>
+        <div class="score-badge">
+          <div class="label">Level</div>
+          <div class="value" id="level">1</div>
+        </div>
+        <div class="next-box">
+          <div class="label" style="text-align:center;margin-bottom:0.5rem;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;">Next</div>
+          <canvas id="nextCanvas" width="100" height="100"></canvas>
+        </div>
+        <button class="btn-icon" id="resetBtn" title="New Game" style="margin-top:0.75rem;">↻</button>
+      </div>
+
+      <div class="tetris-board-wrap">
+        <canvas id="tetrisCanvas" width="250" height="500"></canvas>
+        <div id="overlay" class="tetris-overlay hidden">
+          <div class="tetris-overlay-content">
+            <div class="tetris-overlay-icon">💀</div>
+            <h2>Game Over</h2>
+            <p>Score: <span id="finalScore">0</span></p>
+            <button class="btn btn-primary" id="retryBtn">Play Again</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="mobile-controls">
+      <button class="t-btn" id="btnLeft">◀</button>
+      <button class="t-btn" id="btnDown">▼</button>
+      <button class="t-btn" id="btnRotate">↻</button>
+      <button class="t-btn" id="btnRight">▶</button>
+      <button class="t-btn t-btn-drop" id="btnDrop">⏬</button>
+    </div>
+
+    <p class="hint-text">Arrow keys to move • ↑ to rotate • Space to drop</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

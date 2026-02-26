@@ -1,0 +1,178 @@
+/* Sudoku Styles */
+
+.difficulty-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.diff-btn {
+  padding: 0.4rem 1.1rem;
+  border: 1px solid var(--bg-glass-border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.diff-btn.active {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.diff-btn:hover:not(.active) {
+  background: var(--bg-card-hover);
+}
+
+.board-container { position: relative; }
+
+.sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0;
+  width: min(380px, 90vw);
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sdk-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.02);
+  border: 0.5px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--text-primary);
+}
+
+/* 3x3 box borders */
+.sdk-cell[data-col="2"],
+.sdk-cell[data-col="5"] {
+  border-right: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.sdk-cell[data-row="2"],
+.sdk-cell[data-row="5"] {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.sdk-cell:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sdk-cell.selected {
+  background: rgba(59, 130, 246, 0.15) !important;
+  box-shadow: inset 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+.sdk-cell.highlight {
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.sdk-cell.given {
+  color: var(--text-secondary);
+  cursor: default;
+}
+
+.sdk-cell.user {
+  color: #3b82f6;
+}
+
+.sdk-cell.error {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.sdk-cell.same-num {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Number pad */
+.num-pad {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.num-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.num-btn:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #3b82f6;
+}
+
+.num-btn:active {
+  transform: scale(0.92);
+}
+
+.erase-btn {
+  color: #ef4444;
+}
+
+/* Overlay */
+.sdk-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: var(--transition-base);
+}
+
+.sdk-overlay.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+.sdk-overlay-content { text-align: center; }
+.sdk-overlay-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+.sdk-overlay-content h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.sdk-overlay-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .sdk-cell { font-size: 1rem; }
+  .num-btn { width: 38px; height: 38px; font-size: 0.95rem; }
+}

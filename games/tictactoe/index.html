@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Tic Tac Toe - Classic 2 player strategy game. Free browser game." />
+  <title>Tic Tac Toe | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('tictactoe'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: var(--gradient-fire); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Tic Tac Toe</h1>
+      <p class="game-subtitle">Challenge a friend — X goes first</p>
+    </div>
+
+    <!-- Turn + scores -->
+    <div class="game-toolbar">
+      <div class="score-badge player-x">
+        <div class="label">Player X</div>
+        <div class="value" id="scoreX">0</div>
+      </div>
+      <div class="score-badge draws">
+        <div class="label">Draws</div>
+        <div class="value" id="scoreDraw">0</div>
+      </div>
+      <div class="score-badge player-o">
+        <div class="label">Player O</div>
+        <div class="value" id="scoreO">0</div>
+      </div>
+    </div>
+
+    <div class="turn-indicator">
+      <span id="turnText">X's turn</span>
+    </div>
+
+    <div class="board-area">
+      <div class="ttt-board" id="board">
+        <div class="ttt-cell" data-index="0"></div>
+        <div class="ttt-cell" data-index="1"></div>
+        <div class="ttt-cell" data-index="2"></div>
+        <div class="ttt-cell" data-index="3"></div>
+        <div class="ttt-cell" data-index="4"></div>
+        <div class="ttt-cell" data-index="5"></div>
+        <div class="ttt-cell" data-index="6"></div>
+        <div class="ttt-cell" data-index="7"></div>
+        <div class="ttt-cell" data-index="8"></div>
+      </div>
+
+      <!-- Win line SVG overlay -->
+      <svg class="win-line-svg" id="winLineSvg" viewBox="0 0 300 300">
+        <line id="winLine" x1="0" y1="0" x2="0" y2="0" />
+      </svg>
+    </div>
+
+    <!-- Result overlay -->
+    <div id="resultOverlay" class="result-overlay hidden">
+      <div class="result-content">
+        <div id="resultIcon" class="result-icon">🎉</div>
+        <h2 id="resultTitle">X Wins!</h2>
+        <button class="btn btn-primary" id="nextRoundBtn">Next Round</button>
+      </div>
+    </div>
+
+    <button class="btn btn-secondary" id="resetAllBtn" style="margin-top: 1.5rem;">Reset Scores</button>
+
+    <p class="hint-text" style="margin-top: 0.75rem;">2 Player local game • Take turns clicking</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

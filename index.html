@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arcade Zone - Play 8 premium browser games free. 2048, Snake, Tic Tac Toe, Minesweeper, Memory Match, Tetris, Breakout, Sudoku and more!" />
+  <meta name="keywords" content="games, browser games, 2048, snake, tic tac toe, minesweeper, memory match, tetris, breakout, sudoku, online games, free games" />
+  <meta name="author" content="Arcade Zone" />
+  <meta property="og:title" content="Arcade Zone - Premium Browser Games" />
+  <meta property="og:description" content="Play 8 addictive browser games for free. 2048, Snake, Tic Tac Toe, Minesweeper, Memory, Tetris, Breakout and Sudoku!" />
+  <meta property="og:type" content="website" />
+  <title>Arcade Zone | Play Premium Browser Games</title>
+  <link rel="stylesheet" href="assets/css/common.css" />
+  <style>
+    /* ===== PARTICLE CANVAS ===== */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== SCROLL PROGRESS ===== */
+    .scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: var(--gradient-primary);
+      z-index: 10001;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.25;
+      z-index: 0;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+    .hero-orb--purple {
+      width: 500px; height: 500px;
+      background: var(--accent-purple);
+      top: -10%; left: -5%;
+    }
+    .hero-orb--blue {
+      width: 400px; height: 400px;
+      background: var(--accent-blue);
+      bottom: -15%; right: -5%;
+      animation-delay: 4s;
+    }
+    .hero-orb--pink {
+      width: 300px; height: 300px;
+      background: var(--accent-pink);
+      top: 40%; right: 20%;
+      animation-delay: 8s;
+      opacity: 0.12;
+    }
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -40px) scale(1.1); }
+      100% { transform: translate(-20px, 20px) scale(0.95); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.25rem;
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      color: var(--accent-purple);
+      margin-bottom: 2rem;
+      animation: fadeIn 0.6s ease;
+      backdrop-filter: blur(10px);
+      letter-spacing: 0.02em;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 8px var(--accent-green-glow);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 9vw, 7rem);
+      font-weight: 900;
+      line-height: 1.02;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+    .hero-title .line1 {
+      display: block;
+      animation: heroSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-title .line2 {
+      display: block;
+      animation: heroSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6, #a78bfa);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes heroSlide {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+      animation: heroSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: heroSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+    .hero-cta .btn-primary {
+      padding: 1rem 2.5rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      background: var(--gradient-primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 25px rgba(139, 92, 246, 0.35);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .hero-cta .btn-primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 40px rgba(139, 92, 246, 0.5);
+    }
+    .hero-cta .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .hero-cta .btn-primary:hover::after { opacity: 1; }
+
+    .hero-cta .btn-secondary {
+      padding: 1rem 2.5rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: var(--radius-full);
+      background: rgba(255,255,255, 0.04);
+      border: 1px solid rgba(255,255,255, 0.12);
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+    .hero-cta .btn-secondary:hover {
+      background: rgba(255,255,255, 0.08);
+      border-color: rgba(255,255,255, 0.25);
+      color: var(--text-primary);
+    }
+
+    /* Stats */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 3.5rem;
+      margin-top: 3.5rem;
+      animation: heroSlide 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+    }
+    .stat-item { text-align: center; }
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 800;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-top: 0.15rem;
+    }
+
+    /* ===== MARQUEE ===== */
+    .marquee-section {
+      overflow: hidden;
+      padding: 1rem 0;
+      border-top: 1px solid var(--bg-glass-border);
+      border-bottom: 1px solid var(--bg-glass-border);
+      position: relative;
+      z-index: 2;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      animation: marqueeScroll 30s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: 0.03em;
+    }
+    .marquee-sep { color: var(--accent-purple); opacity: 0.5; }
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== GAMES SECTION ===== */
+    .games-section {
+      padding: 6rem 0 4rem;
+      position: relative;
+      z-index: 2;
+    }
+    .section-header { text-align: center; margin-bottom: 1.5rem; }
+    .section-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--accent-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
+    }
+    .section-eyebrow::before,
+    .section-eyebrow::after {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--accent-purple);
+      opacity: 0.4;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 0;
+      font-size: 1.05rem;
+    }
+
+    /* Filter Tabs */
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin: 2.5rem auto 3rem;
+      padding: 0 1rem;
+    }
+    .filter-tab {
+      padding: 0.5rem 1.2rem;
+      border-radius: var(--radius-full);
+      background: transparent;
+      border: 1px solid var(--bg-glass-border);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.3s;
+      font-family: var(--font-primary);
+    }
+    .filter-tab:hover {
+      border-color: rgba(139, 92, 246, 0.3);
+      color: var(--text-secondary);
+      background: rgba(139, 92, 246, 0.06);
+    }
+    .filter-tab.active {
+      background: var(--gradient-primary);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 2px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .game-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 1.75rem;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      will-change: transform;
+    }
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .game-card:hover::before { opacity: 1; }
+    .game-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .game-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Per-game accent colors */
+    .game-card[data-game="2048"]::before { background: linear-gradient(90deg, #f59e0b, #ec4899); }
+    .game-card[data-game="2048"]::after { background: radial-gradient(ellipse at top, rgba(245,158,11,0.06), transparent 70%); }
+    .game-card[data-game="snake"]::before { background: linear-gradient(90deg, #06b6d4, #8b5cf6); }
+    .game-card[data-game="snake"]::after { background: radial-gradient(ellipse at top, rgba(6,182,212,0.06), transparent 70%); }
+    .game-card[data-game="tictactoe"]::before { background: linear-gradient(90deg, #ef4444, #f59e0b); }
+    .game-card[data-game="tictactoe"]::after { background: radial-gradient(ellipse at top, rgba(239,68,68,0.06), transparent 70%); }
+    .game-card[data-game="minesweeper"]::before { background: linear-gradient(90deg, #22c55e, #06b6d4); }
+    .game-card[data-game="minesweeper"]::after { background: radial-gradient(ellipse at top, rgba(34,197,94,0.06), transparent 70%); }
+    .game-card[data-game="memory"]::before { background: linear-gradient(90deg, #f472b6, #a78bfa); }
+    .game-card[data-game="memory"]::after { background: radial-gradient(ellipse at top, rgba(244,114,182,0.06), transparent 70%); }
+    .game-card[data-game="tetris"]::before { background: linear-gradient(90deg, #06b6d4, #8b5cf6); }
+    .game-card[data-game="tetris"]::after { background: radial-gradient(ellipse at top, rgba(6,182,212,0.06), transparent 70%); }
+    .game-card[data-game="breakout"]::before { background: linear-gradient(90deg, #ef4444, #f59e0b); }
+    .game-card[data-game="breakout"]::after { background: radial-gradient(ellipse at top, rgba(239,68,68,0.06), transparent 70%); }
+    .game-card[data-game="sudoku"]::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .game-card[data-game="sudoku"]::after { background: radial-gradient(ellipse at top, rgba(59,130,246,0.06), transparent 70%); }
+    .game-card:hover::after { opacity: 1; }
+
+    /* Card internals */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      position: relative; z-index: 1;
+    }
+    .game-card-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+    .game-card[data-game="2048"] .game-card-icon { background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(236,72,153,0.12)); }
+    .game-card[data-game="snake"] .game-card-icon { background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(139,92,246,0.12)); }
+    .game-card[data-game="tictactoe"] .game-card-icon { background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.12)); }
+    .game-card[data-game="minesweeper"] .game-card-icon { background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(6,182,212,0.12)); }
+    .game-card[data-game="memory"] .game-card-icon { background: linear-gradient(135deg, rgba(244,114,182,0.12), rgba(167,139,250,0.12)); }
+    .game-card[data-game="tetris"] .game-card-icon { background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(139,92,246,0.12)); }
+    .game-card[data-game="breakout"] .game-card-icon { background: linear-gradient(135deg, rgba(239,68,68,0.12), rgba(245,158,11,0.12)); }
+    .game-card[data-game="sudoku"] .game-card-icon { background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(99,102,241,0.12)); }
+
+    .badge-popular, .badge-new {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .badge-popular {
+      background: linear-gradient(135deg, rgba(245,158,11,0.15), rgba(239,68,68,0.15));
+      color: var(--accent-orange);
+      border: 1px solid rgba(245,158,11,0.2);
+    }
+    .badge-new {
+      background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15));
+      color: var(--accent-green);
+      border: 1px solid rgba(16,185,129,0.2);
+    }
+
+    .game-card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      position: relative; z-index: 1;
+    }
+    .game-card-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+      position: relative; z-index: 1;
+    }
+    .game-card-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .tag {
+      padding: 0.2rem 0.65rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .game-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative; z-index: 1;
+    }
+    .game-card-best {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .game-card-best span {
+      color: var(--accent-orange);
+      font-weight: 700;
+    }
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: all 0.3s;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-secondary);
+    }
+    .play-btn .arrow { transition: transform 0.3s; font-size: 1rem; }
+    .game-card:hover .play-btn {
+      border-color: rgba(139, 92, 246, 0.3);
+      color: var(--text-primary);
+      background: rgba(139, 92, 246, 0.1);
+    }
+    .game-card:hover .play-btn .arrow { transform: translateX(3px); }
+    .game-card.hidden { display: none; }
+
+    /* ===== FEATURES ===== */
+    .features-section {
+      padding: 5rem 0 6rem;
+      position: relative; z-index: 2;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .feature-card {
+      text-align: center;
+      padding: 2.5rem 1.5rem 2rem;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-4px);
+    }
+    .feature-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+      background: rgba(139, 92, 246, 0.08);
+      border: 1px solid rgba(139, 92, 246, 0.12);
+    }
+    .feature-card:nth-child(2) .feature-icon-wrap {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.12);
+    }
+    .feature-card:nth-child(3) .feature-icon-wrap {
+      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.12);
+    }
+    .feature-card:nth-child(4) .feature-icon-wrap {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.12);
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .feature-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ===== CTA BANNER ===== */
+    .cta-banner {
+      max-width: 1100px;
+      margin: 0 auto 4rem;
+      padding: 0 1.5rem;
+      position: relative; z-index: 2;
+    }
+    .cta-inner {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+      border: 1px solid rgba(139, 92, 246, 0.15);
+      border-radius: 24px;
+      padding: 3.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at 30% 30%, rgba(139,92,246,0.08), transparent 50%),
+                  radial-gradient(circle at 70% 70%, rgba(59,130,246,0.08), transparent 50%);
+      animation: ctaSpin 15s linear infinite;
+    }
+    @keyframes ctaSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      position: relative;
+      letter-spacing: -0.02em;
+    }
+    .cta-desc {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2.2rem;
+      border-radius: var(--radius-full);
+      font-weight: 700;
+      font-size: 1rem;
+      background: #fff;
+      color: #0a0a0f;
+      text-decoration: none;
+      transition: all 0.3s;
+      position: relative;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--bg-glass-border);
+      padding: 3rem 2rem 2rem;
+      position: relative; z-index: 2;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--text-primary); }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      width: 100%;
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--bg-glass-border);
+    }
+
+    /* ===== CURSOR GLOW ===== */
+    .cursor-glow {
+      position: fixed;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.06), transparent 70%);
+      z-index: 1;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .cursor-glow.visible { opacity: 1; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 5rem 1.25rem 3rem; }
+      .stats-row { gap: 2rem; }
+      .stat-value { font-size: 1.8rem; }
+      .games-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+      .hero-orb--purple { width: 300px; height: 300px; }
+      .hero-orb--blue { width: 250px; height: 250px; }
+      .hero-orb--pink { width: 200px; height: 200px; }
+    }
+
+    /* ===== REVEAL ANIMATIONS ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+    .reveal-delay-5 { transition-delay: 0.40s; }
+    .reveal-delay-6 { transition-delay: 0.48s; }
+    .reveal-delay-7 { transition-delay: 0.56s; }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <canvas id="particle-canvas"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="bg-gradient"></div>
+
+  <script src="assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('home'); addBgGradient();</script>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-orb hero-orb--purple"></div>
+    <div class="hero-orb hero-orb--blue"></div>
+    <div class="hero-orb hero-orb--pink"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Free to play &middot; No ads &middot; No downloads
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">Play. Compete.</span>
+        <span class="line2"><span class="gradient-text">Dominate.</span></span>
+      </h1>
+      <p class="hero-subtitle">
+        8 premium browser games, zero friction. Challenge yourself, crush high scores, and play anywhere &mdash; no installs needed.
+      </p>
+      <div class="hero-cta">
+        <a href="#games" class="btn-primary">Browse Games &rarr;</a>
+        <a href="games/2048/index.html" class="btn-secondary">&#127918; Quick Play</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value" id="statGames">8</div>
+          <div class="stat-label">Games</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">&infin;</div>
+          <div class="stat-label">Replayability</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Ads</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">&lt;1s</div>
+          <div class="stat-label">Load Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <section class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">&#128290; 2048</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#128013; Snake</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#11093; Tic Tac Toe</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#128163; Minesweeper</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#127183; Memory Match</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#129521; Tetris</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#127955; Breakout</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#129513; Sudoku</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#128290; 2048</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#128013; Snake</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#11093; Tic Tac Toe</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#128163; Minesweeper</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#127183; Memory Match</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#129521; Tetris</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#127955; Breakout</span><span class="marquee-item marquee-sep">&middot;</span>
+      <span class="marquee-item">&#129513; Sudoku</span><span class="marquee-item marquee-sep">&middot;</span>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section class="games-section" id="games">
+    <div class="section-header">
+      <div class="section-eyebrow">Game Library</div>
+      <h2 class="section-title">Choose Your Game</h2>
+      <p class="section-subtitle">Handcrafted for the best browser gaming experience</p>
+    </div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="all">All Games</button>
+      <button class="filter-tab" data-filter="puzzle">Puzzle</button>
+      <button class="filter-tab" data-filter="arcade">Arcade</button>
+      <button class="filter-tab" data-filter="logic">Logic</button>
+      <button class="filter-tab" data-filter="strategy">Strategy</button>
+    </div>
+    <div class="games-grid">
+
+      <a href="games/2048/index.html" class="game-card reveal" data-game="2048" data-category="puzzle strategy">
+        <div class="card-header">
+          <div class="game-card-icon">&#128290;</div>
+          <span class="badge-popular">&#128293; Popular</span>
+        </div>
+        <h3 class="game-card-title">2048</h3>
+        <p class="game-card-desc">Slide tiles, merge numbers, reach 2048. Simple to learn, impossible to master.</p>
+        <div class="game-card-tags">
+          <span class="tag">Puzzle</span><span class="tag">Strategy</span><span class="tag">Addictive</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="best2048">0</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/snake/index.html" class="game-card reveal reveal-delay-1" data-game="snake" data-category="arcade">
+        <div class="card-header">
+          <div class="game-card-icon">&#128013;</div>
+          <span class="badge-popular">&#128293; Popular</span>
+        </div>
+        <h3 class="game-card-title">Snake</h3>
+        <p class="game-card-desc">Guide the snake, eat food, grow longer. Don't crash! A neon-lit reimagining.</p>
+        <div class="game-card-tags">
+          <span class="tag">Arcade</span><span class="tag">Reflexes</span><span class="tag">Classic</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestSnake">0</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/tetris/index.html" class="game-card reveal reveal-delay-2" data-game="tetris" data-category="arcade">
+        <div class="card-header">
+          <div class="game-card-icon">&#129521;</div>
+          <span class="badge-popular">&#128293; Popular</span>
+        </div>
+        <h3 class="game-card-title">Tetris</h3>
+        <p class="game-card-desc">Stack blocks, clear lines, survive the speed. The king of all arcade games.</p>
+        <div class="game-card-tags">
+          <span class="tag">Arcade</span><span class="tag">Reflex</span><span class="tag">Addictive</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestTetris">0</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/minesweeper/index.html" class="game-card reveal reveal-delay-3" data-game="minesweeper" data-category="logic puzzle">
+        <div class="card-header">
+          <div class="game-card-icon">&#128163;</div>
+          <span class="badge-new">&#10024; New</span>
+        </div>
+        <h3 class="game-card-title">Minesweeper</h3>
+        <p class="game-card-desc">Uncover the board without hitting a mine. Logic and deduction across 3 levels.</p>
+        <div class="game-card-tags">
+          <span class="tag">Logic</span><span class="tag">Puzzle</span><span class="tag">Classic</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestMinesweeper">&mdash;</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/sudoku/index.html" class="game-card reveal reveal-delay-4" data-game="sudoku" data-category="logic puzzle">
+        <div class="card-header">
+          <div class="game-card-icon">&#129513;</div>
+          <span class="badge-new">&#10024; New</span>
+        </div>
+        <h3 class="game-card-title">Sudoku</h3>
+        <p class="game-card-desc">Fill the 9&times;9 grid &mdash; every row, column, and box must contain 1&ndash;9.</p>
+        <div class="game-card-tags">
+          <span class="tag">Logic</span><span class="tag">Numbers</span><span class="tag">Relaxing</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestSudoku">&mdash;</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/memory/index.html" class="game-card reveal reveal-delay-5" data-game="memory" data-category="puzzle">
+        <div class="card-header">
+          <div class="game-card-icon">&#127183;</div>
+          <span class="badge-new">&#10024; New</span>
+        </div>
+        <h3 class="game-card-title">Memory Match</h3>
+        <p class="game-card-desc">Flip cards, find pairs. Train your memory on 4&times;4 and 6&times;6 grids.</p>
+        <div class="game-card-tags">
+          <span class="tag">Memory</span><span class="tag">Casual</span><span class="tag">Brain</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestMemory">&mdash;</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/breakout/index.html" class="game-card reveal reveal-delay-6" data-game="breakout" data-category="arcade">
+        <div class="card-header">
+          <div class="game-card-icon">&#127955;</div>
+          <span class="badge-new">&#10024; New</span>
+        </div>
+        <h3 class="game-card-title">Breakout</h3>
+        <p class="game-card-desc">Paddle, ball, bricks. Smash through colorful rows with precision bouncing.</p>
+        <div class="game-card-tags">
+          <span class="tag">Arcade</span><span class="tag">Action</span><span class="tag">Levels</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Best: <span id="bestBreakout">0</span></div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+      <a href="games/tictactoe/index.html" class="game-card reveal reveal-delay-7" data-game="tictactoe" data-category="strategy">
+        <div class="card-header">
+          <div class="game-card-icon">&#11093;</div>
+        </div>
+        <h3 class="game-card-title">Tic Tac Toe</h3>
+        <p class="game-card-desc">The ultimate 2-player showdown. Outsmart your opponent on the 3&times;3 grid.</p>
+        <div class="game-card-tags">
+          <span class="tag">Multiplayer</span><span class="tag">Strategy</span><span class="tag">Quick</span>
+        </div>
+        <div class="game-card-footer">
+          <div class="game-card-best">Wins tracked in-game</div>
+          <div class="play-btn">Play <span class="arrow">&rarr;</span></div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <div class="section-header">
+      <div class="section-eyebrow">Why Us</div>
+      <h2 class="section-title">Why Arcade Zone?</h2>
+      <p class="section-subtitle">Built different. Played everywhere.</p>
+    </div>
+    <div class="features-grid" style="margin-top:3rem">
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">&#9889;</div>
+        <div class="feature-title">Instant Play</div>
+        <div class="feature-desc">No downloads, no installs, no sign-ups. Click and play in under a second.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon-wrap">&#128241;</div>
+        <div class="feature-title">Any Device</div>
+        <div class="feature-desc">Touch-optimized controls. Desktop, tablet, or phone &mdash; identical experience.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon-wrap">&#127942;</div>
+        <div class="feature-title">Score Tracking</div>
+        <div class="feature-desc">High scores saved automatically. Come back and beat your personal records.</div>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon-wrap">&#128274;</div>
+        <div class="feature-title">Private &amp; Fast</div>
+        <div class="feature-desc">No accounts, no tracking, no ads. Pure HTML/CSS/JS &mdash; blazing performance.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner reveal">
+    <div class="cta-inner">
+      <h2 class="cta-title">Ready to Play?</h2>
+      <p class="cta-desc">Jump into any game &mdash; no setup required. Your scores persist between sessions.</p>
+      <a href="#games" class="cta-btn">Start Playing &rarr;</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">&#127918; Arcade Zone</div>
+      <div class="footer-links">
+        <a href="#games">Games</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Arcade Zone. All rights reserved. Crafted with passion.</div>
+    </div>
+  </footer>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // Best scores
+    function setScore(id, key, fb) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = localStorage.getItem(key) || fb;
+    }
+    setScore('best2048', 'best', '0');
+    setScore('bestSnake', 'high-score', '0');
+    setScore('bestTetris', 'tetris-best', '0');
+    setScore('bestBreakout', 'breakout-best', '0');
+    setScore('bestMinesweeper', 'ms-best-easy', '\u2014');
+    setScore('bestMemory', 'memory-best-4x4', '\u2014');
+    setScore('bestSudoku', 'sudoku-best-easy', '\u2014');
+
+    // Scroll progress
+    var bar = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', function() {
+      var pct = document.documentElement.scrollTop / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+      bar.style.width = pct + '%';
+    }, { passive: true });
+
+    // Scroll reveal
+    var ro = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(function(el) { ro.observe(el); });
+
+    // Filter tabs
+    var tabs = document.querySelectorAll('.filter-tab');
+    var cards = document.querySelectorAll('.game-card');
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var f = tab.dataset.filter;
+        cards.forEach(function(c) {
+          if (f === 'all' || c.dataset.category.indexOf(f) !== -1) {
+            c.classList.remove('hidden');
+            setTimeout(function() { c.classList.add('visible'); }, 50);
+          } else {
+            c.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Cursor glow (desktop)
+    var glow = document.getElementById('cursorGlow');
+    if (window.matchMedia('(pointer: fine)').matches) {
+      document.addEventListener('mousemove', function(e) {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        if (!glow.classList.contains('visible')) glow.classList.add('visible');
+      });
+    }
+
+    // Particle canvas
+    var canvas = document.getElementById('particle-canvas');
+    var ctx = canvas.getContext('2d');
+    var pts = [], aid, w, h;
+
+    function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function Pt() { this.reset(); }
+    Pt.prototype.reset = function() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.sz = Math.random() * 1.5 + 0.5;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.o = Math.random() * 0.4 + 0.1;
+      this.p = Math.random() * Math.PI * 2;
+    };
+    Pt.prototype.update = function() {
+      this.x += this.vx; this.y += this.vy; this.p += 0.01;
+      if (this.x < 0 || this.x > w || this.y < 0 || this.y > h) this.reset();
+    };
+    Pt.prototype.draw = function() {
+      var a = this.o * (0.6 + 0.4 * Math.sin(this.p));
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.sz, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(139,92,246,' + a + ')';
+      ctx.fill();
+    };
+
+    var n = w < 768 ? 40 : 80;
+    for (var i = 0; i < n; i++) pts.push(new Pt());
+
+    function loop() {
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < pts.length; i++) { pts[i].update(); pts[i].draw(); }
+      for (var i = 0; i < pts.length; i++) {
+        for (var j = i + 1; j < pts.length; j++) {
+          var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+          var d = Math.sqrt(dx*dx + dy*dy);
+          if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = 'rgba(139,92,246,' + (0.06 * (1 - d/120)) + ')';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      aid = requestAnimationFrame(loop);
+    }
+    loop();
+
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) cancelAnimationFrame(aid); else loop();
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        var t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+
+    // Counter animation
+    function animCount(el, target, dur) {
+      var s = 0;
+      function step(ts) {
+        if (!s) s = ts;
+        var p = Math.min((ts - s) / dur, 1);
+        el.textContent = Math.floor(p * target);
+        if (p < 1) requestAnimationFrame(step); else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    }
+    var sg = document.getElementById('statGames');
+    var so = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { animCount(sg, 8, 800); so.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    so.observe(sg);
+  })();
+  </script>
+</body>
+</html>

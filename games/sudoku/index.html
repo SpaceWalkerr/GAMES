@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Sudoku - Classic number puzzle. Free brain training game." />
+  <title>Sudoku | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('sudoku'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: linear-gradient(135deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Sudoku</h1>
+      <p class="game-subtitle">Fill the 9×9 grid — every row, column & box must have 1-9</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Mistakes</div>
+        <div class="value" id="mistakes">0 / 3</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Time</div>
+        <div class="value" id="timer">0:00</div>
+      </div>
+      <button class="btn-icon" id="resetBtn" title="New Puzzle">↻</button>
+    </div>
+
+    <div class="difficulty-bar">
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+
+    <div class="board-container">
+      <div id="board" class="sudoku-board"></div>
+      <div id="overlay" class="sdk-overlay hidden">
+        <div class="sdk-overlay-content">
+          <div id="overlayIcon" class="sdk-overlay-icon">🎉</div>
+          <h2 id="overlayTitle">Puzzle Solved!</h2>
+          <p id="overlayMsg">Great job!</p>
+          <button class="btn btn-primary" id="overlayBtn">New Puzzle</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="num-pad">
+      <button class="num-btn" data-num="1">1</button>
+      <button class="num-btn" data-num="2">2</button>
+      <button class="num-btn" data-num="3">3</button>
+      <button class="num-btn" data-num="4">4</button>
+      <button class="num-btn" data-num="5">5</button>
+      <button class="num-btn" data-num="6">6</button>
+      <button class="num-btn" data-num="7">7</button>
+      <button class="num-btn" data-num="8">8</button>
+      <button class="num-btn" data-num="9">9</button>
+      <button class="num-btn erase-btn" data-num="0">✕</button>
+    </div>
+
+    <p class="hint-text">Click a cell, then pick a number • Keyboard works too</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

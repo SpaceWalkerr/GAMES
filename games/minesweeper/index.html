@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Minesweeper - Classic mine-clearing puzzle game. Free browser game." />
+  <title>Minesweeper | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('minesweeper'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Minesweeper</h1>
+      <p class="game-subtitle">Click to reveal • Right-click to flag mines</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Mines</div>
+        <div class="value" id="mineCount">10</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Time</div>
+        <div class="value" id="timer">0</div>
+      </div>
+      <button class="btn-icon" id="resetBtn" title="New Game">↻</button>
+    </div>
+
+    <div class="difficulty-bar">
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+
+    <div class="board-container">
+      <div id="board" class="ms-board"></div>
+      <div id="overlay" class="ms-overlay hidden">
+        <div class="ms-overlay-content">
+          <div id="overlayIcon" class="ms-overlay-icon">💥</div>
+          <h2 id="overlayTitle">Game Over</h2>
+          <p id="overlayMsg">You hit a mine!</p>
+          <button class="btn btn-primary" id="overlayBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint-text">Left-click to reveal • Right-click / long-press to flag</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

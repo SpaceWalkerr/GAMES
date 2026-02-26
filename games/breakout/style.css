@@ -1,0 +1,55 @@
+/* Breakout Styles */
+
+.canvas-wrap {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 30px rgba(245, 158, 11, 0.06);
+  max-width: 100%;
+}
+
+#gameCanvas {
+  display: block;
+  width: min(480px, 95vw);
+  height: auto;
+  background: #0a0a12;
+  touch-action: none;
+}
+
+.bo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: var(--transition-base);
+}
+
+.bo-overlay.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+.bo-overlay-content { text-align: center; }
+.bo-overlay-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+
+.bo-overlay-content h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.bo-overlay-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.bo-overlay-content p span {
+  color: var(--accent-orange); font-weight: 700;
+}

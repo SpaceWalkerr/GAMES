@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play 2048 - Slide tiles and reach 2048! A free addictive puzzle game." />
+  <title>2048 | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('2048'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title">2048</h1>
+      <p class="game-subtitle">Slide & combine tiles to reach 2048</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Score</div>
+        <div class="value" id="score">0</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Best</div>
+        <div class="value" id="best">0</div>
+      </div>
+      <button class="btn-icon" id="resetBtn" title="New Game">↻</button>
+    </div>
+
+    <div class="board-container">
+      <div class="board" id="board">
+        <!-- Cells rendered by JS -->
+      </div>
+      <div id="gameOverOverlay" class="game-over-overlay hidden">
+        <div class="game-over-content">
+          <div class="game-over-icon">😵</div>
+          <h2>Game Over!</h2>
+          <p>Your score: <span id="finalScore">0</span></p>
+          <button class="btn btn-primary" id="retryBtn">Try Again</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint-text">Use arrow keys or swipe to play</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

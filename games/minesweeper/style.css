@@ -1,0 +1,148 @@
+/* Minesweeper Styles */
+
+.difficulty-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.diff-btn {
+  padding: 0.4rem 1.1rem;
+  border: 1px solid var(--bg-glass-border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.diff-btn.active {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.diff-btn:hover:not(.active) {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.board-container {
+  position: relative;
+}
+
+.ms-board {
+  display: inline-grid;
+  gap: 3px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.ms-cell {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.12s;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ms-cell:hover:not(.revealed):not(.flagged) {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.05);
+}
+
+.ms-cell:active:not(.revealed) {
+  transform: scale(0.93);
+}
+
+.ms-cell.revealed {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.02);
+  cursor: default;
+}
+
+.ms-cell.revealed.mine {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.ms-cell.flagged {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* Number colors */
+.ms-cell[data-num="1"] { color: #3b82f6; }
+.ms-cell[data-num="2"] { color: #10b981; }
+.ms-cell[data-num="3"] { color: #ef4444; }
+.ms-cell[data-num="4"] { color: #8b5cf6; }
+.ms-cell[data-num="5"] { color: #f59e0b; }
+.ms-cell[data-num="6"] { color: #06b6d4; }
+.ms-cell[data-num="7"] { color: #ec4899; }
+.ms-cell[data-num="8"] { color: #6b7280; }
+
+/* Overlay */
+.ms-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: var(--transition-base);
+}
+
+.ms-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ms-overlay-content { text-align: center; }
+
+.ms-overlay-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.ms-overlay-content h2 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+}
+
+.ms-overlay-content p {
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+@media (max-width: 480px) {
+  .ms-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+  }
+  .ms-board { gap: 2px; padding: 6px; }
+}

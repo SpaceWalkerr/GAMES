@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Memory Match - Flip cards and find matching pairs. Free brain training game." />
+  <title>Memory Match | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('memory'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: linear-gradient(135deg, #ec4899, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Memory Match</h1>
+      <p class="game-subtitle">Flip cards & find all matching pairs</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Moves</div>
+        <div class="value" id="moves">0</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Pairs</div>
+        <div class="value" id="pairs">0 / 8</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Time</div>
+        <div class="value" id="timer">0</div>
+      </div>
+      <button class="btn-icon" id="resetBtn" title="New Game">↻</button>
+    </div>
+
+    <div class="difficulty-bar">
+      <button class="diff-btn active" data-size="4">4×4</button>
+      <button class="diff-btn" data-size="6">6×6</button>
+    </div>
+
+    <div class="board-container">
+      <div id="board" class="mem-board"></div>
+      <div id="overlay" class="mem-overlay hidden">
+        <div class="mem-overlay-content">
+          <div class="mem-overlay-icon">🎉</div>
+          <h2>You Win!</h2>
+          <p id="overlayMsg">Completed in 0 moves</p>
+          <button class="btn btn-primary" id="overlayBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="hint-text">Click two cards to reveal — match all pairs to win</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

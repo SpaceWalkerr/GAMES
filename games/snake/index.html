@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="description" content="Play Snake - The classic arcade game reimagined. Free browser game." />
+  <title>Snake | Arcade Zone</title>
+  <link rel="stylesheet" href="../../assets/css/common.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <script src="../../assets/js/navigation.js"></script>
+  <script>new ArcadeNavigation('snake'); addBgGradient();</script>
+
+  <div class="game-wrapper">
+    <div class="game-header">
+      <h1 class="game-title" style="background: var(--gradient-cool); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Snake</h1>
+      <p class="game-subtitle">Eat, grow, survive — don't hit the walls!</p>
+    </div>
+
+    <div class="game-toolbar">
+      <div class="score-badge">
+        <div class="label">Score</div>
+        <div class="value" id="scoreDisplay">0</div>
+      </div>
+      <div class="score-badge">
+        <div class="label">Best</div>
+        <div class="value" id="highScoreDisplay">0</div>
+      </div>
+    </div>
+
+    <div class="canvas-wrapper">
+      <canvas id="gameCanvas" width="400" height="400"></canvas>
+      
+      <!-- Start screen -->
+      <div id="startScreen" class="overlay-screen">
+        <div class="overlay-content">
+          <div class="overlay-icon">🐍</div>
+          <h2>Ready?</h2>
+          <p>Press any arrow key or swipe to start</p>
+        </div>
+      </div>
+
+      <!-- Game over screen -->
+      <div id="gameOverScreen" class="overlay-screen hidden">
+        <div class="overlay-content">
+          <div class="overlay-icon">💀</div>
+          <h2>Game Over!</h2>
+          <div class="overlay-scores">
+            <div class="score-badge">
+              <div class="label">Score</div>
+              <div class="value" id="goScore">0</div>
+            </div>
+            <div class="score-badge">
+              <div class="label">Best</div>
+              <div class="value" id="goBest">0</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="playAgainBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="mobile-controls">
+      <div class="d-pad">
+        <button class="d-btn d-up" data-dir="up">▲</button>
+        <div class="d-mid">
+          <button class="d-btn d-left" data-dir="left">◀</button>
+          <div class="d-center"></div>
+          <button class="d-btn d-right" data-dir="right">▶</button>
+        </div>
+        <button class="d-btn d-down" data-dir="down">▼</button>
+      </div>
+    </div>
+
+    <p class="hint-text">Arrow keys to move • Swipe on mobile</p>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
